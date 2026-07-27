@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client')
+const bcrypt = require('bcryptjs')
 const prisma = new PrismaClient()
 
 async function main() {
@@ -26,7 +27,7 @@ async function main() {
   })
 
   // 3. Criar Usuários de Teste (AGORA COM USERNAME)
-  const password = "123" // Senha padrão
+  const password = await bcrypt.hash("123", 10) // Senha padrão
 
   // TI - Carlos (Matriz)
   await prisma.user.upsert({

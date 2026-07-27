@@ -47,9 +47,7 @@ export async function POST(request: Request) {
 
     // 4. O Prompt Supremo
     const prompt = `
-      Você é o Assistente Virtual Oficial do Helpdesk de TI do Supermercado Redenção.
-      
-      Você é o Assistente Virtual Oficial do Helpdesk de TI do Supermercado Redenção.
+      Você é o Assistente Virtual Oficial do Helpdesk de TI.
       
       REGRAS DE FORMATAÇÃO E COMPORTAMENTO (OBRIGATÓRIO):
       1. Assuma que QUALQUER pergunta se refere ao ambiente do Helpdesk e da empresa.

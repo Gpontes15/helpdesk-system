@@ -6,8 +6,8 @@ services:
     restart: always
     environment:
       TZ: "America/Sao_Paulo"
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: password123
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       # O banco primário criado junto com o container é o do Next.js
       POSTGRES_DB: helpdesk
     ports:
@@ -21,16 +21,21 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_ESTOQUE_TOKEN: ${NEXT_PUBLIC_API_ESTOQUE_TOKEN}
     restart: always
     ports:
       - "3001:3000" # Liberado na porta 3001 para não conflitar no seu SSH
     environment:
       TZ: "America/Sao_Paulo"
       # Conecta no 'db' internamente no banco 'helpdesk'
-      DATABASE_URL: "postgresql://admin:password123@db:5432/helpdesk?schema=public"
+      DATABASE_URL: "postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/helpdesk?schema=public"
       # URL para o Next.js conversar com o Estoque na rede interna do Docker
       API_ESTOQUE_URL: "http://estoque:8080"
-      GEMINI_API_KEY: "AIzaSyCNkOvHRrPKku_8tXuXtQM9o9kixksIUUM"
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      SESSION_SECRET: ${SESSION_SECRET}
+      NEXT_PUBLIC_API_ESTOQUE_TOKEN: ${NEXT_PUBLIC_API_ESTOQUE_TOKEN}
+      API_ESTOQUE_TOKEN: ${API_ESTOQUE_TOKEN}
     depends_on:
       - db
 
@@ -46,8 +51,9 @@ services:
     environment:
       # A MÁGICA AQUI: Conecta no mesmo serviço 'db', mas no banco 'suprimentos'
       SPRING_DATASOURCE_URL: "jdbc:postgresql://db:5432/helpdesk"
-      SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: password123
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      API_ESTOQUE_TOKEN: ${API_ESTOQUE_TOKEN}
       # Cria as tabelas do estoque automaticamente
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     depends_on:

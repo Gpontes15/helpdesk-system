@@ -23,20 +23,23 @@ export default function EstoquePage() {
     try {
       // Adicionamos um timestamp na URL para impedir que o navegador use Cache antigo
       const timestamp = new Date().getTime()
-      const res = await fetch(`http://10.200.103.12:8080/produtos?t=${timestamp}`, { 
+      const res = await fetch(`http://localhost:8080/produtos?t=${timestamp}`, {
         cache: 'no-store',
-        headers: { 'Pragma': 'no-cache' }
+        headers: {
+          'Pragma': 'no-cache',
+          'X-API-Token': process.env.NEXT_PUBLIC_API_ESTOQUE_TOKEN as string
+        }
       })
-      
+
       if (!res.ok) throw new Error()
-      
+
       const data = await res.json()
 
       // 🔥 A CORREÇÃO MÁGICA ESTÁ AQUI 🔥
       // Ordenamos a lista pelo ID. O menor ID sempre fica em cima.
       // Isso impede que os itens fiquem "dançando" na tela.
       const listaOrdenada = data.sort((a: ProdutoJava, b: ProdutoJava) => a.id - b.id)
-      
+
       setProdutos([...listaOrdenada])
     } catch (err) {
       console.error("Erro ao carregar dados:", err)
@@ -50,7 +53,7 @@ export default function EstoquePage() {
   return (
     <div className="min-h-screen bg-gray-100 p-8 text-black">
       <div className="max-w-6xl mx-auto space-y-6">
-        
+
         <div className="flex justify-between items-center bg-white p-4 rounded-lg shadow-sm">
           <div>
             <h1 className="text-3xl font-bold text-gray-800">📦 Controle de Estoque</h1>
@@ -67,8 +70,8 @@ export default function EstoquePage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {produtos.map((prod) => (
-                <div 
-                  key={prod.id} 
+                <div
+                  key={prod.id}
                   className={`bg-white p-6 rounded-xl shadow-sm border-l-8 relative group hover:shadow-lg transition-all duration-200 ${
                     prod.quantidade <= prod.estoqueMinimo ? 'border-red-500 bg-red-50/10' : 'border-green-500'
                   }`}
@@ -114,20 +117,20 @@ export default function EstoquePage() {
                   )}
 
                   <div className="flex gap-3 pt-2">
-                     <MovimentarModal 
-                        produtoId={prod.id} 
-                        nomeProduto={prod.nome} 
-                        tipo="USAR" 
-                        onSucesso={carregarDados} 
+                     <MovimentarModal
+                        produtoId={prod.id}
+                        nomeProduto={prod.nome}
+                        tipo="USAR"
+                        onSucesso={carregarDados}
                       />
-                     <MovimentarModal 
-                        produtoId={prod.id} 
-                        nomeProduto={prod.nome} 
-                        tipo="REPOR" 
-                        onSucesso={carregarDados} 
+                     <MovimentarModal
+                        produtoId={prod.id}
+                        nomeProduto={prod.nome}
+                        tipo="REPOR"
+                        onSucesso={carregarDados}
                       />
                   </div>
-                  
+
                   <div className="mt-4 pt-3 border-t border-gray-50 text-center">
                     <HistoricoModal produtoId={prod.id} />
                   </div>

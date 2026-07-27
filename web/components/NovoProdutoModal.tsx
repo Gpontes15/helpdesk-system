@@ -26,9 +26,12 @@ export function NovoProdutoModal({ onSucesso }: NovoProdutoModalProps) {
     }
 
     try {
-      const res = await fetch('http://10.200.103.12:8080/produtos', {
+      const res = await fetch('http://localhost:8080/produtos', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-Token': process.env.NEXT_PUBLIC_API_ESTOQUE_TOKEN as string
+        },
         body: JSON.stringify(produto)
       })
 

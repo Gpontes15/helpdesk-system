@@ -4,6 +4,8 @@ import { prisma } from "@/lib/db"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { getCurrentUser } from "@/actions/auth-actions"
+import bcrypt from "bcryptjs"
+
 
 // 1. CADASTRAR USUÁRIO
 export async function registerUser(formData: FormData) {
@@ -13,25 +15,27 @@ export async function registerUser(formData: FormData) {
   }
 
   const name = formData.get('name') as string
-  const username = formData.get('username') as string 
-  const password = formData.get('password') as string 
+  const username = formData.get('username') as string
+  const password = formData.get('password') as string
   const department = formData.get('department') as string
   const role = formData.get('role') as 'USER' | 'ADMIN'
-  const storeId = formData.get('storeId') as string 
+  const storeId = formData.get('storeId') as string
 
   const existingUser = await prisma.user.findUnique({ where: { username } })
   if (existingUser) {
     redirect('/admin/usuarios?error=username_exists')
   }
 
+  const hashedPassword = await bcrypt.hash(password, 10)
+
   await prisma.user.create({
-    data: { 
-        name, 
-        username, 
-        password, 
-        department, 
-        role,
-        storeId: storeId || null 
+    data: {
+      name,
+      username,
+      password: hashedPassword,
+      department,
+      role,
+      storeId: storeId || null
     }
   })
 
@@ -46,8 +50,8 @@ export async function updateUser(formData: FormData) {
 
   const userId = formData.get('userId') as string
   const name = formData.get('name') as string
-  const username = formData.get('username') as string 
-  const password = formData.get('password') as string 
+  const username = formData.get('username') as string
+  const password = formData.get('password') as string
   const department = formData.get('department') as string
   const role = formData.get('role') as 'USER' | 'ADMIN'
   const storeId = formData.get('storeId') as string
@@ -60,8 +64,9 @@ export async function updateUser(formData: FormData) {
     storeId: storeId || null
   }
 
+  // Só atualiza a senha se o admin digitou uma nova (hasheada)
   if (password && password.trim() !== "") {
-    dataToUpdate.password = password
+    dataToUpdate.password = await bcrypt.hash(password, 10)
   }
 
   try {

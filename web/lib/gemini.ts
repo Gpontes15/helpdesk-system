@@ -24,7 +24,7 @@ export async function gerarRelatorioIA() {
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   const prompt = `
-    Você é o Analista de TI do Supermercado Redenção. 
+    Você é o Analista de TI.
     Abaixo estão os últimos chamados do sistema de Helpdesk:
     ${JSON.stringify(dadosParaIA)}
 

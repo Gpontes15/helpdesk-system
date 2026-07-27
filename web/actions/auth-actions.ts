@@ -1,44 +1,43 @@
 'use server'
 
 import { prisma } from "@/lib/db"
-import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+import bcrypt from "bcryptjs"
+import { getSession, getSessionForLogin } from "@/lib/session"
 
 export async function login(formData: FormData) {
   const username = formData.get('username') as string
   const password = formData.get('password') as string
+  // Checkbox "Lembrar de mim": vem como "on" quando marcado, ou null quando não
+  const lembrar = formData.get('lembrar') === 'on'
 
   const user = await prisma.user.findUnique({
     where: { username }
   })
 
-  if (!user || user.password !== password) {
-    redirect('/login?error=invalid') 
+  // Compara a senha digitada com o hash guardado no banco
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    redirect('/login?error=invalid')
   }
 
-  const cookieStore = await cookies()
-  
-  // Cookie V2 para garantir que versões antigas não conflitem
-  cookieStore.set('session_user_id_v2', user.id, {
-    httpOnly: true,
-    secure: false, 
-    maxAge: 60 * 60 * 24 * 7, // 7 dias
-    path: '/'
-  })
+  // Cria a sessão com a validade certa (7 dias se "lembrar", senão expira ao fechar)
+  const session = await getSessionForLogin(lembrar)
+  session.userId = user.id
+  await session.save()
 
   redirect('/')
 }
 
 export async function logout() {
-  const cookieStore = await cookies()
-  cookieStore.delete('session_user_id_v2')
+  const session = await getSession()
+  session.destroy() // apaga a sessão de forma segura
   redirect('/login')
 }
 
 export async function getCurrentUser() {
   try {
-    const cookieStore = await cookies()
-    const userId = cookieStore.get('session_user_id_v2')?.value
+    const session = await getSession()
+    const userId = session.userId
 
     if (!userId) return null
 
@@ -47,8 +46,8 @@ export async function getCurrentUser() {
       include: { store: true }
     })
 
-    // Se o cookie existe mas o usuário não foi encontrado (ex: banco resetado)
-    // Retorna null para forçar um novo login em vez de quebrar a página
+    // Se o cookie existe mas o usuário não foi encontrado (ex: banco resetado),
+    // retorna null para forçar um novo login em vez de quebrar a página
     if (!user) return null
 
     return user

@@ -7,7 +7,6 @@ import java.util.List;
 
 @RestController // Diz que essa classe responde a requisições REST (JSON)
 @RequestMapping("/categorias") // Todas as rotas aqui começam com /categorias
-@CrossOrigin(origins = "*")
 public class CategoriaController {
 
     @Autowired // Injeção de Dependência: O Spring "entrega" o repository pronto pra usar

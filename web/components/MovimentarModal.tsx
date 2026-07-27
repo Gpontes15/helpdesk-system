@@ -23,7 +23,7 @@ export function MovimentarModal({ produtoId, nomeProduto, tipo, onSucesso }: Mov
       const endpoint = tipo === 'USAR' ? 'consumir' : 'repor'
       
       // MUDANÇA CRÍTICA: Forçamos o uso do ID exato deste card
-      const urlBase = `http://10.200.103.12:8080/produtos/${produtoId}/${endpoint}`
+      const urlBase = `http://localhost:8080/produtos/${produtoId}/${endpoint}`
       const params = new URLSearchParams({
         quantidade: qtd.toString()
       })
@@ -35,7 +35,10 @@ export function MovimentarModal({ produtoId, nomeProduto, tipo, onSucesso }: Mov
       const res = await fetch(`${urlBase}?${params.toString()}`, { 
         method: 'PATCH',
         // Evita cache de rede para garantir que o saldo atualize
-        cache: 'no-store' 
+        cache: 'no-store',
+        headers: {
+          'X-API-Token': process.env.NEXT_PUBLIC_API_ESTOQUE_TOKEN as string
+        }
       })
       
       if (res.ok) {
