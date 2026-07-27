@@ -17,12 +17,12 @@ export function NovoProdutoModal({ onSucesso }: NovoProdutoModalProps) {
     setLoading(true)
 
     const formData = new FormData(e.currentTarget)
-    
+
     const produto = {
       nome: formData.get('nome'),
       quantidade: Number(formData.get('quantidade')),
       estoqueMinimo: Number(formData.get('estoqueMinimo')),
-      categoria: { id: 1 } 
+      categoria: { id: 1 }
     }
 
     try {
@@ -50,41 +50,41 @@ export function NovoProdutoModal({ onSucesso }: NovoProdutoModalProps) {
 
   return (
     <>
-      <button 
+      <button
         onClick={() => setIsOpen(true)}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-bold transition"
+        className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-semibold text-sm transition-all shadow-lg shadow-indigo-600/25 active:scale-[0.98]"
       >
         + Novo Produto
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4">
-          <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-xl relative">
-            <button 
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+          <div className="bg-white p-6 rounded-2xl w-full max-w-md shadow-2xl border border-slate-200 relative">
+            <button
                 onClick={() => setIsOpen(false)}
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 transition"
             >
                 ✕
             </button>
-            <h2 className="text-xl font-bold mb-4 text-gray-800">Cadastrar Produto</h2>
+            <h2 className="text-lg font-bold mb-5 text-slate-900">Cadastrar Produto</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-bold text-gray-700">Nome</label>
-                <input name="nome" required className="w-full border p-2 rounded text-black outline-none focus:border-blue-500" placeholder="Ex: Teclado USB" />
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Nome</label>
+                <input name="nome" required className="w-full border border-slate-300 p-2.5 rounded-lg text-slate-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition placeholder:text-slate-400" placeholder="Ex: Teclado USB" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                   <label className="block text-xs font-bold text-gray-500 uppercase">Qtd Inicial</label>
-                   <input name="quantidade" type="number" required className="w-full border p-2 rounded text-black outline-none focus:border-blue-500" />
+                   <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Qtd Inicial</label>
+                   <input name="quantidade" type="number" required className="w-full border border-slate-300 p-2.5 rounded-lg text-slate-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition" />
                 </div>
                 <div>
-                   <label className="block text-xs font-bold text-gray-500 uppercase">Estoque Mínimo</label>
-                   <input name="estoqueMinimo" type="number" required className="w-full border p-2 rounded text-black outline-none focus:border-blue-500" />
+                   <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Estoque Mínimo</label>
+                   <input name="estoqueMinimo" type="number" required className="w-full border border-slate-300 p-2.5 rounded-lg text-slate-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition" />
                 </div>
               </div>
-              <div className="flex justify-end gap-2 pt-4 border-t">
-                <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 text-gray-600 font-medium">Cancelar</button>
-                <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded font-bold hover:bg-blue-700" disabled={loading}>
+              <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
+                <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 text-slate-500 font-medium text-sm hover:text-slate-700 transition">Cancelar</button>
+                <button type="submit" className="bg-indigo-600 text-white px-5 py-2 rounded-lg font-semibold text-sm hover:bg-indigo-700 transition shadow-lg shadow-indigo-600/25 disabled:opacity-50" disabled={loading}>
                   {loading ? 'Salvando...' : 'Salvar'}
                 </button>
               </div>

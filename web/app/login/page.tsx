@@ -10,69 +10,72 @@ export default async function LoginPage() {
   if (user) redirect('/')
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-200 p-4">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 border-t-4 border-blue-700">
-        
+    <div className="min-h-screen flex items-center justify-center bg-slate-100 p-4">
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl shadow-slate-300/40 p-8 border border-slate-200">
+
         {/* Cabeçalho */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-gray-900">Helpdesk</h1>
-          <p className="text-gray-700 text-base mt-2 font-semibold">Sistema de Chamados</p>
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-indigo-800 mb-4 shadow-lg shadow-indigo-600/30">
+            <span className="text-white text-2xl font-black">H</span>
+          </div>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Helpdesk</h1>
+          <p className="text-slate-500 text-sm mt-1 font-medium">Sistema de Chamados</p>
         </div>
 
         {/* Formulário */}
-        <form action={login} className="space-y-6">
+        <form action={login} className="space-y-5">
           <div>
-            <label className="block text-sm font-bold text-gray-900 mb-1">
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
               Usuário
             </label>
-            <input 
-              name="username" 
-              type="text" 
-              required 
+            <input
+              name="username"
+              type="text"
+              required
               autoComplete="username"
-              className="w-full border-2 border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 bg-white text-gray-900 font-medium transition"
+              className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 bg-white text-slate-900 font-medium transition placeholder:text-slate-400"
               placeholder="Digite seu usuário..."
             />
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-gray-900 mb-1">
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
               Senha
             </label>
-            <input 
-              name="password" 
-              type="password" 
-              required 
+            <input
+              name="password"
+              type="password"
+              required
               autoComplete="current-password"
-              className="w-full border-2 border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 bg-white text-gray-900 font-medium transition"
+              className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 bg-white text-slate-900 font-medium transition placeholder:text-slate-400"
               placeholder="Sua senha..."
             />
           </div>
 
           {/* Checkbox "Lembrar de mim" */}
           <div className="flex items-center gap-2">
-            <input 
+            <input
               id="lembrar"
-              name="lembrar" 
-              type="checkbox" 
-              className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600 cursor-pointer"
+              name="lembrar"
+              type="checkbox"
+              className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
             />
-            <label htmlFor="lembrar" className="text-sm text-gray-700 font-medium cursor-pointer select-none">
+            <label htmlFor="lembrar" className="text-sm text-slate-600 font-medium cursor-pointer select-none">
               Manter conectado neste dispositivo
             </label>
           </div>
 
-          <button 
-            type="submit" 
-            className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-lg py-3 rounded-lg transition shadow-md active:scale-95 transform"
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition-all shadow-lg shadow-indigo-600/25 active:scale-[0.98]"
           >
-            ENTRAR
+            Entrar
           </button>
         </form>
 
         {/* Rodapé */}
-        <div className="mt-8 text-center border-t border-gray-200 pt-4">
-          <p className="text-sm text-gray-600 font-medium">
+        <div className="mt-8 text-center border-t border-slate-100 pt-5">
+          <p className="text-sm text-slate-400 font-medium">
             Problemas com acesso? Procure a TI.
           </p>
         </div>
